@@ -1,0 +1,5 @@
+train: /media/arthik/Storage/MASTERS/FOURTH/THESIS/IMPLEMENTATION/data/data/train/images
+val: /media/arthik/Storage/MASTERS/FOURTH/THESIS/IMPLEMENTATION/data/data/validation/images
+
+nc: 1
+names: ['ball']
