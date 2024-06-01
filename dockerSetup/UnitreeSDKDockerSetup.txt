@@ -1,0 +1,34 @@
+sudo su
+docker run -d -t --name unitree_18 ubuntu:18.04
+docker exec -it unitree_18 bash
+apt update
+apt upgrade
+apt install python3 python3.8
+apt install python3-pip
+apt install iproute2 tar cmake
+apt install build-essential g++ python-dev autotools-dev libicu-dev libbz2-dev libboost-all-dev curl gcc git
+apt install nano
+cd home
+curl -LO https://github.com/unitreerobotics/unitree_legged_sdk/archive/refs/tags/v3.8.0.tar.gz
+tar xf v3.8.0.tar.gz
+cd unitree_legged_sdk-3.8.0
+mkdir build
+cd build
+cmake ..
+make
+
+alternative
+git clone https://github.com/unitreerobotics/unitree_legged_sdk.git
+
+
+To run using python examples
+-- python requirement python3.8
+
+
+Camera SDK
+pip3 install --upgrade pip
+pip3 install opencv-python
+apt install freeglut3-dev
+apt install mesa-utils
+apt install xorg openbox
+apt install
