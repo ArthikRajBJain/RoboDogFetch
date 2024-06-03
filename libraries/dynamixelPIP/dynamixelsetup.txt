@@ -1,0 +1,3 @@
+cd Dynamixel
+source venv/bin/activate
+python setup.py install

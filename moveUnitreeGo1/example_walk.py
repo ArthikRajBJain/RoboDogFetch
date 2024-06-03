@@ -4,7 +4,9 @@ import sys
 import time
 import math
 
-sys.path.append('../libraries/unitree/')
+sys.path.append('../libraries/unitreeSO/amd64/')
+# sys.path.append('../libraries/unitreeSO/arm64/')
+
 import robot_interface as sdk
 
 
