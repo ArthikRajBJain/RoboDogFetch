@@ -18,7 +18,9 @@ def initDynamixel(ttyPort):
     packetHandler = PacketHandler(2.0)
     portHandler.openPort()
     portHandler.setBaudRate(1000000)
-    return portHandler, packetHandler
+    groupSyncWrite = GroupSyncWrite(portHandler, packetHandler, 116, 4)
+    groupSyncRead = GroupSyncRead(portHandler, packetHandler, 132, 4)
+    return portHandler, packetHandler, GroupSyncWrite, groupSyncRead
 
 
 # Enable Dynamixel Torque
@@ -31,15 +33,15 @@ def setTorque(portHandler,packetHandler):
 
 # Write goal position
 def writePosition(portHandler,packetHandler,val1,val2,val3,val4,val5):
-    if val1 >= 0:
+    if(val1 >= 0):
         packetHandler.write4ByteTxRx(portHandler, 11, 116, val1)
-    if val2 >= 0:
+    if(val2 >= 0):
         packetHandler.write4ByteTxRx(portHandler, 12, 116, val2)
-    if val3 >= 0:
+    if(val3 >= 0):
         packetHandler.write4ByteTxRx(portHandler, 13, 116, val3)
-    if val4 >= 0:
+    if(val4 >= 0):
         packetHandler.write4ByteTxRx(portHandler, 14, 116, val4)
-    if val5 >= 0:
+    if(val5 >= 0):
         packetHandler.write4ByteTxRx(portHandler, 15, 116, val5)
 
 # Read present position
@@ -79,6 +81,23 @@ def releaseTorque(portHandler,packetHandler):
     packetHandler.write1ByteTxRx(portHandler, 14, 64, 0)
     packetHandler.write1ByteTxRx(portHandler, 15, 64, 0)
 
+def byteSplitter(val):
+    return [DXL_LOBYTE(DXL_LOWORD(val)),DXL_HIBYTE(DXL_LOWORD(val)),DXL_LOBYTE(DXL_HIWORD(val)),DXL_HIBYTE(DXL_HIWORD(val))]
+
+def togetherWrite(groupSyncWrite,val1,val2,val3,val4,val5):
+    if(val1 != []):
+        groupSyncWrite.addParam(11, val1)
+    if(val2 != []):
+        groupSyncWrite.addParam(12, val2)
+    if(val3 != []):
+        groupSyncWrite.addParam(13, val3)
+    if(val4 != []):
+        groupSyncWrite.addParam(14, val4)
+    if(val5 != []):
+        groupSyncWrite.addParam(15, val5)
+    groupSyncWrite.txPacket()
+    groupSyncWrite.clearParam()
+
 # set PID values
 def setPID(portHandler,packetHandler,pos,P,I,D):
     if(P >= 0):
@@ -112,7 +131,7 @@ def positionComfortable(portHandler,packetHandler):
     writePosition(portHandler,packetHandler,2043,2099,2374,2693,621)
 
 def positionZControl(portHandler,packetHandler,val):
-    setVelocity(portHandler,packetHandler,11,0)
+    # setVelocity(portHandler,packetHandler,11,10000)
     if(val>=900 and val<=3200):
         writePosition(portHandler,packetHandler,val,-1,-1,-1,-1)
 
@@ -120,5 +139,5 @@ def positionZControl(portHandler,packetHandler,val):
 def closeDynamixel(portHandler):
     portHandler.closePort()
 
-port, packet = initDynamixel('/dev/ttyUSB0')
+port, packet, groupWrite, groupRead = initDynamixel('/dev/ttyUSB0')
 setPID(port,packet,11,400,0,0)
