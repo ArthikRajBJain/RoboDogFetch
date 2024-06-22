@@ -1,6 +1,7 @@
 import os
 import sys, tty, termios
 from dynamixel_sdk import *
+import time
 
 def getch():
     fd = sys.stdin.fileno()
@@ -20,7 +21,7 @@ def initDynamixel(ttyPort):
     portHandler.setBaudRate(1000000)
     groupSyncWrite = GroupSyncWrite(portHandler, packetHandler, 116, 4)
     groupSyncRead = GroupSyncRead(portHandler, packetHandler, 132, 4)
-    return portHandler, packetHandler, GroupSyncWrite, groupSyncRead
+    return portHandler, packetHandler, groupSyncWrite, groupSyncRead
 
 
 # Enable Dynamixel Torque
@@ -134,6 +135,44 @@ def positionZControl(portHandler,packetHandler,val):
     # setVelocity(portHandler,packetHandler,11,10000)
     if(val>=900 and val<=3200):
         writePosition(portHandler,packetHandler,val,-1,-1,-1,-1)
+
+def waitPosition(portHandler,packetHandler,val,percent):
+    for i in range(5):
+        val[i] = int(val[i] - val[i]*percent)
+    curVal = readPositionAll(portHandler,packetHandler)
+    while(curVal[0]>=val[0] and curVal[1]>=val[1] and curVal[2]>=val[2] and curVal[3]>=val[3] and curVal[4]>=val[4]):
+        curVal = readPositionAll(portHandler,packetHandler)
+        print(curVal)
+
+def slowDown(portHandler,packetHandler,speed):
+    setVelocity(portHandler,packetHandler,12,speed)
+    setVelocity(portHandler,packetHandler,13,speed)
+    setVelocity(portHandler,packetHandler,14,speed)
+    setVelocity(portHandler,packetHandler,15,speed)
+
+def speedUp(portHandler,packetHandler):
+    setVelocity(portHandler,packetHandler,12,0)
+    setVelocity(portHandler,packetHandler,13,0)
+    setVelocity(portHandler,packetHandler,14,0)
+    setVelocity(portHandler,packetHandler,15,0)
+
+def grabMotion(portHandler,packetHandler):
+    slowDown(portHandler,packetHandler,5000)
+    writePosition(portHandler,packetHandler,-1,2070,1360,2460,620)
+    time.sleep(5)
+    writePosition(portHandler,packetHandler,-1,2635,1656,2133,1564)
+    time.sleep(5)
+    writePosition(portHandler,packetHandler,-1,2563,1656,2941,1564)
+    time.sleep(5)
+    writePosition(portHandler,packetHandler,-1,2051,2430,2697,1563)
+    time.sleep(5)
+    writePosition(portHandler,packetHandler,-1,2051,2430,2697,1130)
+    time.sleep(2)
+    writePosition(portHandler,packetHandler,-1,1941,2600,2691,1130)
+    time.sleep(2)
+    writePosition(portHandler,packetHandler,-1,1941,2600,2691,1550)
+    time.sleep(2)
+    writePosition(portHandler,packetHandler,-1,1508,2361,2303,1550)
 
 # Close port
 def closeDynamixel(portHandler):
