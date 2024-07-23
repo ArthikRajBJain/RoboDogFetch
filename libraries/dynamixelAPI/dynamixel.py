@@ -1,7 +1,6 @@
 import os
 import sys, tty, termios
 from dynamixel_sdk import *
-import time
 
 def getch():
     fd = sys.stdin.fileno()
@@ -45,10 +44,31 @@ def writePosition(portHandler,packetHandler,val1,val2,val3,val4,val5):
     if(val5 >= 0):
         packetHandler.write4ByteTxRx(portHandler, 15, 116, val5)
 
+# Write goal Angle
+def writePositionAngle(portHandler,packetHandler,val1,val2,val3,val4,val5):
+    if(val1 >= 0):
+        packetHandler.write4ByteTxRx(portHandler, 11, 116, int(val1*651.739492))
+    if(val2 >= 0):
+        packetHandler.write4ByteTxRx(portHandler, 12, 116, int(val2*651.739492))
+    if(val3 >= 0):
+        packetHandler.write4ByteTxRx(portHandler, 13, 116, int(val3*651.739492))
+    if(val4 >= 0):
+        packetHandler.write4ByteTxRx(portHandler, 14, 116, int(val4*651.739492))
+    if(val5 >= 0):
+        packetHandler.write4ByteTxRx(portHandler, 15, 116, int(val5*651.739492))
+
 # Read present position
 def readPosition(portHandler,packetHandler,pos):
     dxl_present_position, dxl_comm_result, dxl_error = packetHandler.read4ByteTxRx(portHandler, pos, 132)
     return dxl_present_position
+
+# Read present Current
+def readCurrent(portHandler,packetHandler,pos):
+    dxl_present_current, dxl_comm_result, dxl_error = packetHandler.read4ByteTxRx(portHandler, pos, 126)
+    return dxl_present_current
+
+def readAngle(portHandler,packetHandler,pos):
+    return readPosition(portHandler,packetHandler,pos)*0.001534355
 
 # Read present position for all motors
 def readPositionAll(portHandler,packetHandler):
@@ -120,7 +140,7 @@ def positionHome(portHandler,packetHandler):
     writePosition(portHandler,packetHandler,2040,1000,3060,880,640)
 
 def positionSuitable(portHandler,packetHandler):
-    writePosition(portHandler,packetHandler,2040,1700,1600,1800,620)
+    writePosition(portHandler,packetHandler,2040,1700,1600,1800,-1)
 
 def positionTurnLeft(portHandler,packetHandler):
     writePosition(portHandler,packetHandler,3200,1700,1600,1800,620)
@@ -131,10 +151,19 @@ def positionTurnRight(portHandler,packetHandler):
 def positionComfortable(portHandler,packetHandler):
     writePosition(portHandler,packetHandler,2043,2099,2374,2693,621)
 
+def positionOpenArm(portHandler,packetHandler):
+    writePosition(portHandler,packetHandler,-1,-1,-1,-1,1032)
+
+def positionCloseArm(portHandler,packetHandler):
+    writePosition(portHandler,packetHandler,-1,-1,-1,-1,1550)
+
 def positionZControl(portHandler,packetHandler,val):
     # setVelocity(portHandler,packetHandler,11,10000)
     if(val>=900 and val<=3200):
         writePosition(portHandler,packetHandler,val,-1,-1,-1,-1)
+
+def positionReturnBall(portHandler,packetHandler):
+    writePosition(portHandler,packetHandler,2040,1929,2428,1752,-1)
 
 def waitPosition(portHandler,packetHandler,val,percent):
     for i in range(5):
@@ -158,21 +187,6 @@ def speedUp(portHandler,packetHandler):
 
 def grabMotion(portHandler,packetHandler):
     slowDown(portHandler,packetHandler,5000)
-    writePosition(portHandler,packetHandler,-1,2070,1360,2460,620)
-    time.sleep(5)
-    writePosition(portHandler,packetHandler,-1,2635,1656,2133,1564)
-    time.sleep(5)
-    writePosition(portHandler,packetHandler,-1,2563,1656,2941,1564)
-    time.sleep(5)
-    writePosition(portHandler,packetHandler,-1,2051,2430,2697,1563)
-    time.sleep(5)
-    writePosition(portHandler,packetHandler,-1,2051,2430,2697,1130)
-    time.sleep(2)
-    writePosition(portHandler,packetHandler,-1,1941,2600,2691,1130)
-    time.sleep(2)
-    writePosition(portHandler,packetHandler,-1,1941,2600,2691,1550)
-    time.sleep(2)
-    writePosition(portHandler,packetHandler,-1,1508,2361,2303,1550)
 
 # Close port
 def closeDynamixel(portHandler):
