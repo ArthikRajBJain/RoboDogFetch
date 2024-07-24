@@ -18,7 +18,7 @@ def distanceMap(boxX):
     return out
 
 while 1:
-    cap = cv2.VideoCapture(0)
+    cap = cv2.VideoCapture(2)
     setTorque(port,packet)
     slowDown(port,packet,1000)
     positionSuitable(port,packet)
@@ -55,12 +55,12 @@ while 1:
                     if(distanceCorrection > 30):
                         distanceCorrection = distanceCorrection + 3
                     i12, j13, k14 = inverseKinematics(distanceCorrection)
-                    slowDown(port,packet,6000)
+                    slowDown(port,packet,2000)
                     writePosition(port,packet,-1,i12,j13,k14,-1)
-                    time.sleep(8)
+                    time.sleep(3)
                     slowDown(port,packet,0)
                     positionCloseArm(port,packet)
-                    time.sleep(2)
+                    time.sleep(1)
                     presentCurrent = readCurrent(port,packet,15)
                     # print("presentCurrent : ")
                     # print(presentCurrent)

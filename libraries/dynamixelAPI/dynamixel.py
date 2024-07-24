@@ -140,7 +140,7 @@ def positionHome(portHandler,packetHandler):
     writePosition(portHandler,packetHandler,2040,1000,3060,880,640)
 
 def positionSuitable(portHandler,packetHandler):
-    writePosition(portHandler,packetHandler,2040,1700,1600,1800,-1)
+    writePosition(portHandler,packetHandler,2040,1328,2567,2386,-1)
 
 def positionTurnLeft(portHandler,packetHandler):
     writePosition(portHandler,packetHandler,3200,1700,1600,1800,620)
