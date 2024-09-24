@@ -18,7 +18,7 @@ def distanceMap(boxX):
     return out
 
 while 1:
-    cap = cv2.VideoCapture(2)
+    cap = cv2.VideoCapture(0)
     setTorque(port,packet)
     slowDown(port,packet,1000)
     positionSuitable(port,packet)
