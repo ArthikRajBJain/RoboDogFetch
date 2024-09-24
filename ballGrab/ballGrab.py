@@ -43,7 +43,7 @@ while 1:
                 if(abs(error) < 5):
                     error = 0
                 if(error !=0 ):
-                    positionZControl(port,packet,readPosition(port,packet,11) + int(-0.7*error))
+                    positionZControl(port,packet,readPosition(port,packet,11) + int(-0.5*error))
                 if(abs((x2-x1) - x2x1_prev) < abs((x2-x1)*0.005)) and (abs((x1) - x1_prev) < abs((x1)*0.005)):
                     sameCount = sameCount + 1
                 else:
