@@ -6,7 +6,7 @@ sys.path.append('../libraries/dynamixelAPI/')
 from dynamixel import *
 model = YOLO('../libraries/yoloDetection/ball.pt')
 
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(2)
 
 setTorque(port,packet)
 # positionHome(port,packet)
@@ -24,6 +24,7 @@ while cap.isOpened():
             start = 0
             x1 = box[0]
             x2 = box[2]
+            print(x2-x1)
             setPoint = ((640.0-(x2-x1))/2.0)
             error = x1 - setPoint
             if(abs(error) < 5):

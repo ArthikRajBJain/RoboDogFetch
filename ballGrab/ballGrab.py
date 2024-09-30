@@ -9,7 +9,7 @@ from dynamixel import *
 from ik import *
 model = YOLO('../libraries/yoloDetection/ball.pt')
 
-def distanceMap(boxX):
+def distanceMapArmOnGround(boxX):
     out = 0
     if(boxX >= 157 and boxX <= 350):
         out = 0.0028*(boxX**2) - 1.9118*boxX + 480.5943
@@ -17,8 +17,12 @@ def distanceMap(boxX):
         out = -0.00067437*(boxX**3) + 0.27581*(boxX**2) - 38.937*boxX + 2173.5
     return out
 
+def distanceMap(boxX):
+    out = 0.0000027821*(boxX**4) - 0.0016156*(boxX**3) + 0.35248*(boxX**2) - 35.944*boxX + 1699.2
+    return out
+
 while 1:
-    cap = cv2.VideoCapture(0)
+    cap = cv2.VideoCapture(2)
     setTorque(port,packet)
     slowDown(port,packet,1000)
     positionSuitable(port,packet)
@@ -52,8 +56,14 @@ while 1:
                 if(sameCount == 100):
                     positionOpenArm(port,packet)
                     distanceCorrection = int(distanceMap(x2-x1)/10.0)
+                    print('boxX = ', end="")
+                    print(x2-x1)
+                    print('distance = ', end="")
+                    print(distanceCorrection)
                     if(distanceCorrection > 30):
                         distanceCorrection = distanceCorrection + 3
+                    if(distanceCorrection < 25):
+                        distanceCorrection = distanceCorrection + 1
                     i12, j13, k14 = inverseKinematics(distanceCorrection)
                     slowDown(port,packet,2000)
                     writePosition(port,packet,-1,i12,j13,k14,-1)
