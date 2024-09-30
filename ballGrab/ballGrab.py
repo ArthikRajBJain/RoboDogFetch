@@ -60,10 +60,10 @@ while 1:
                     print(x2-x1)
                     print('distance = ', end="")
                     print(distanceCorrection)
-                    if(distanceCorrection > 30):
-                        distanceCorrection = distanceCorrection + 3
-                    if(distanceCorrection < 25):
-                        distanceCorrection = distanceCorrection + 1
+                    if(distanceCorrection >= 30):
+                        distanceCorrection = distanceCorrection + 4
+                    elif(distanceCorrection > 20):
+                        distanceCorrection = distanceCorrection + 2
                     i12, j13, k14 = inverseKinematics(distanceCorrection)
                     slowDown(port,packet,2000)
                     writePosition(port,packet,-1,i12,j13,k14,-1)
@@ -71,6 +71,7 @@ while 1:
                     slowDown(port,packet,0)
                     positionCloseArm(port,packet)
                     time.sleep(1)
+                    slowDown(port,packet,2000)
                     presentCurrent = readCurrent(port,packet,15)
                     # print("presentCurrent : ")
                     # print(presentCurrent)
@@ -80,8 +81,8 @@ while 1:
                         positionSuitable(port,packet)
                         continue
                     time.sleep(2)
+                    slowDown(port,packet,2000)
                     positionReturnBall(port,packet)
-                    slowDown(port,packet,1000)
                     time.sleep(7)
                     positionOpenArm(port,packet)
                     positionHome(port,packet)
