@@ -2,9 +2,10 @@ import socket
 import cv2
 import time
 import sys
+import struct
 
 # Define the host and port to connect to
-HOST = '192.168.28.88'
+HOST = '192.168.76.28'
 PORT = 65432
 
 ARRAY_SIZE = 10

@@ -4,11 +4,12 @@ import numpy as np
 import sys
 from ultralytics import YOLO
 import time
+import struct
 
 model = YOLO('../libraries/yoloDetection/ball.pt')
 
 # Define the host and port to listen on
-HOST = '192.168.28.88'
+HOST = '192.168.76.28'
 PORT = 65432
 
 ARRAY_SIZE = 3
@@ -56,6 +57,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server_socket:
                 annotated_frame = results[0].plot()
                 box = results[0].boxes.xyxy.ravel().cpu().numpy()
                 if(box.size > 0):
+                    start = 0
                     x1 = box[0]
                     x2 = box[2]
                     setPoint = ((640.0-(x2-x1))/2.0)
