@@ -75,6 +75,14 @@ def moveBackward(cmd,udp,quantity):
     udp.SetSend(cmd)
     udp.Send()
 
+def moveDirectionless(cmd,udp,quantity):
+    cmd.mode = 2
+    cmd.velocity = [quantity, 0]
+    cmd.gaitType = 1
+    cmd.yawSpeed = 0
+    udp.SetSend(cmd)
+    udp.Send()
+
 # Rotate ClockWise
 def rotateClockwise(cmd,udp,quantity):
     cmd.mode = 2
@@ -89,6 +97,23 @@ def rotateCounterClockwise(cmd,udp,quantity):
     cmd.mode = 2
     cmd.velocity = [0, 0]
     cmd.yawSpeed = quantity
+    cmd.gaitType = 1
+    udp.SetSend(cmd)
+    udp.Send()
+
+def rotateDirectionless(cmd,udp,quantity):
+    cmd.mode = 2
+    cmd.velocity = [0, 0]
+    cmd.yawSpeed = quantity
+    cmd.gaitType = 1
+    udp.SetSend(cmd)
+    udp.Send()
+
+def orientDirectionless(cmd,udp,quantity,quantity1):
+    cmd.mode = 2
+    cmd.velocity = [0, 0]
+    cmd.yawSpeed = quantity1
+    cmd.velocity = [quantity, 0]
     cmd.gaitType = 1
     udp.SetSend(cmd)
     udp.Send()

@@ -3,23 +3,56 @@ import cv2
 from ultralytics import YOLO
 import time
 
+model = YOLO('../libraries/yoloDetection/ball.pt')
+sys.path.append('../libraries/unitreeAPI/')
+from unitreeAPI import *
+
 sys.path.append('../libraries/dynamixelAPI/')
 sys.path.append('../libraries/inverseKinematics/')
-from dynamixel import *
 from ik import *
-model = YOLO('../libraries/yoloDetection/ball.pt')
-
-def distanceMapArmOnGround(boxX):
-    out = 0
-    if(boxX >= 157 and boxX <= 350):
-        out = 0.0028*(boxX**2) - 1.9118*boxX + 480.5943
-    if(boxX < 157 and boxX >= 80):
-        out = -0.00067437*(boxX**3) + 0.27581*(boxX**2) - 38.937*boxX + 2173.5
-    return out
 
 def distanceMap(boxX):
     out = 0.0000027821*(boxX**4) - 0.0016156*(boxX**3) + 0.35248*(boxX**2) - 35.944*boxX + 1699.2
     return out
+
+framenumber = 0
+
+while not(framenumber > 450):
+    cap = cv2.VideoCapture(2)
+    standUp(cmd,udp)
+    while cap.isOpened():
+        success, frame = cap.read()
+        if success:
+            framenumber = framenumber + 1
+            print(framenumber)
+            results = model(source=frame, conf=0.65, max_det=1, iou=0.5, imgsz=(640,480), verbose=False)
+            annotated_frame = results[0].plot()
+            box = results[0].boxes.xyxy.ravel().cpu().numpy()
+            if(box.size > 0):
+                start = 0
+                x1 = box[0]
+                x2 = box[2]
+                error = 120 - (x2-x1)
+                setPoint = ((640.0-(x2-x1))/2.0)
+                rot_error = x1 - setPoint
+                orientDirectionless(cmd,udp,error*0.004,rot_error*-0.003)
+            cv2.imshow("YOLOv8 Inference", annotated_frame)
+            if cv2.waitKey(1) & 0xFF == ord("q"):
+                break
+        else:
+            break
+        if(framenumber > 450):
+            break
+
+
+    cap.release()
+    cv2.destroyAllWindows()
+
+sleepFlat(cmd,udp)
+time.sleep(4)
+lowPowerSleep(cmd,udp)
+
+from dynamixel import *
 
 while 1:
     cap = cv2.VideoCapture(2)
