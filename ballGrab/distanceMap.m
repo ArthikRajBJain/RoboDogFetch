@@ -4,9 +4,7 @@
 
 distance = [150 170 190 210 230 250 270 290 310 330 350 370 390 410 430 530 600 700];
 boxX =     [177 165 155 140 131 114 107 101 92  89  85  80  78  72  69  55  49  43];
-plot(boxX, distance)
-hold on
-plot(boxX, distance, 'rx')
+plot(boxX, distance,'-brx')
 hold on;
 # coeff = polyfit(boxX,distance,2);
 # x = 80:350;
@@ -35,4 +33,4 @@ hold on;
 coeff = polyfit(boxX,distance,4);
 x = 40:180;
 y = coeff(1)*(x.^4) + coeff(2)*(x.^3) + coeff(3)*(x.^2) + coeff(4)*x + coeff(5);
-plot(x,y)
+plot(x,y, 'b')

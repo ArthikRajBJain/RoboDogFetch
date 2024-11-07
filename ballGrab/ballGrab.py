@@ -18,7 +18,7 @@ def distanceMapArmOnGround(boxX):
     return out
 
 def distanceMap(boxX):
-    out = 0.0000027821*(boxX**4) - 0.0016156*(boxX**3) + 0.35248*(boxX**2) - 35.944*boxX + 1699.2
+    out = 0.0000027821*(boxX**4) - 0.0016156*(boxX**3) + 0.35248*(boxX**2) - 35.944*boxX + 1690.2
     return out
 
 while 1:
