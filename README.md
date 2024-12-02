@@ -37,9 +37,10 @@ Welcome to the Autonomous Tennis Ball Retrieval System repository! This project 
 
 ## Installation
 
-Installing Python 3.8, The dynamic library for moving the robot only works with python 3.8
+Installing Python 3.8, The dynamic library for moving the robot works only with python 3.8
 <br>
-If using Fedora Linux Distribution
+<br>
+If using Fedora, RHEL Linux Distributions
 <br>
 ```console
 $ sudo dnf install python3.8
