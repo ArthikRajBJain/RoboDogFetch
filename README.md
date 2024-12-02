@@ -1,5 +1,7 @@
 # RoboDog Fetch - Detection and Retrieving
 
+![RobotDog](/img/RoboDog.png)
+
 Welcome to the Autonomous Tennis Ball Retrieval System repository! This project demonstrates an innovative robotic system that integrates object detection, distance estimation, and precise control to autonomously locate, approach, and retrieve a tennis ball. Designed for mobile manipulation tasks, the system utilizes advanced algorithms and libraries to achieve real-time performance.
 
 ## Features
