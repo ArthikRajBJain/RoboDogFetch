@@ -37,7 +37,7 @@ Welcome to the Autonomous Tennis Ball Retrieval System repository! This project 
 
 ## Installation
 
-Installing Python 3.8, The dynamic library for moving the robot works only with python 3.8
+Installing Python 3.8, The dynamic library for moving the robot works only with **python3.8**
 <br>
 <br>
 If using Fedora, RHEL Linux Distributions
@@ -56,20 +56,20 @@ $ ./configure --enable-optimizations
 $ make -j$(nproc)
 $ sudo make install
 ```
-<br>
 Creating a Virtual Environment and sourcing into it
+<br>
 ```console
 $ python3.8 -m venv venv
 $ source venv/bin/activate
 ```
-<br>
 Installing Dynamixel library
+<br>
 ```console
 $ cd /libraries/dynamixelPIP/python/
 $ python setup.py install
 ```
-<br>
 Installing Python Dependencies 
+<br>
 ```console
 $ pip install opencv-python labelImg ultralytics
 ```
