@@ -22,4 +22,63 @@ Welcome to the Autonomous Tennis Ball Retrieval System repository! This project 
 
 ## Repository Structure
 
+* [/robotFollow](/robotFollow): Final Implementation folder for Tennis Ball Detection and Grabing with the robot.
+* [/ballGrab](/ballGrab): Implementation folder for Tennis Ball Detection and Grabing.
+* [/trackingBall](/trackingBall): Implementation folder for Tennis Ball Detection and Tracking.
 * [/libraries](/libraries): Libraries for the whole Implementation.
+* [/libraries/dynamixelAPI](/libraries/dynamixelAPI): Library for the Dynamixel Motor and to move the OpenManipulator X Arm.
+* [/libraries/dynamixelPIP](/libraries/dynamixelPIP): Low level library for the Dynamixel Motors from the manufacturer. 
+* [/libraries/inverseKinematics](/libraries/inverseKinematics): Library for the Inverse Kinematics Operation.
+* [/libraries/unitreeAPI](/libraries/unitreeAPI): Higher level Library for moving the Robot.
+* [/libraries/unitreeSO](/libraries/unitreeSO): Dynamically linked Library for moving the Robot provided by the manufacturer.
+* [/libraries/yoloDetection](/libraries/yoloDetection): Custom Trained YOLOv8 model for Tennis Ball detection.
+
+## Installation
+
+Installing Python 3.8, The dynamic library for moving the robot only works with python 3.8
+<br>
+If using Fedora Linux Distribution
+<br>
+```console
+$ sudo dnf install python3.8
+```
+If using Ubuntu, Debian or Raspberry Pi OS Linux Distributions, apt doesn't have python3.8 hence compiling from source
+<br>
+```console
+$ sudo apt install wget build-essential libreadline-dev libncursesw5-dev libssl-dev libsqlite3-dev tk-dev libgdbm-dev libc6-dev libbz2-dev libffi-dev zlib1g-dev curl llvm libncurses5-dev xz-utils liblzma-dev python3-openssl git
+$ wget -c https://www.python.org/ftp/python/3.8.20/Python-3.8.20.tgz
+$ tar -xf Python-3.8.20.tgz
+$ cd Python-3.8.20/
+$ ./configure --enable-optimizations
+$ make -j$(nproc)
+$ sudo make install
+```
+<br>
+Creating a Virtual Environment and sourcing into it
+```console
+$ python3.8 -m venv venv
+$ source venv/bin/activate
+```
+<br>
+Installing Dynamixel library
+```console
+$ cd /libraries/dynamixelPIP/python/
+$ python setup.py install
+```
+<br>
+Installing Python Dependencies 
+```console
+$ pip install opencv-python labelImg ultralytics
+```
+
+## Running the Main Program
+
+Make sure to use the correct Camera Interface for OpenCV and the tty port for communicating with the OpenManipulator X
+```console
+$ cd robotFollow
+$ python robotFollow.py
+```
+
+
+
+
