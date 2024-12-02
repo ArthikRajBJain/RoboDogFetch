@@ -82,6 +82,9 @@ $ cd robotFollow
 $ python robotFollow.py
 ```
 
+## Author
+
+- [Arthik Raj B Jain](https://github.com/ArthikRajBJain)
 
 
 
